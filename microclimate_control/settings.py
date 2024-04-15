@@ -88,7 +88,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -132,4 +131,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery using Redis as the broker
 
-CELERY_BROKER_URL = 'redis://{}:6379/0'.format(os.getenv('DATABASE_HOST'))
+CELERY_BROKER_URL = 'redis://{}:6379/0'.format(os.getenv('SERVER_HOST'))
