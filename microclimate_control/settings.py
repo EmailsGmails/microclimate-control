@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'microclimate_control_app',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "microclimate_control_app.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
