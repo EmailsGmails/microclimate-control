@@ -16,18 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from microclimate_control_app.views import ProjectViewSet, BuildingObjectViewSet, DataPointViewSet, UserViewSet
-
-router = DefaultRouter()
-router.register(r'projects', ProjectViewSet)
-router.register(r'objects', BuildingObjectViewSet)
-router.register(r'data-points', DataPointViewSet)
-router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include('microclimate_control_app.urls')),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
