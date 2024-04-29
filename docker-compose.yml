@@ -6,12 +6,13 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
-      - .:/code
+      - .:/usr/src
     env_file:
       - ./.env
     depends_on:
       - db
-    command: python /code/manage.py runserver ${SERVER_HOST}:${SERVER_PORT}
+      - redis
+    command: python /usr/src/manage.py runserver ${SERVER_HOST}:${SERVER_PORT}
 
   db:
     image: postgres:16
@@ -34,6 +35,11 @@ services:
     image: dpage/pgadmin4
     ports:
       - "5050:80"
+
+  redis:
+      image: redis:7.2
+      ports:
+        - "6379:6379"
 
 volumes:
   postgres_data:

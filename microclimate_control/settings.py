@@ -148,6 +148,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Celery using Redis as the broker
-
-CELERY_BROKER_URL = 'redis://{}:6379/0'.format(os.getenv('SERVER_HOST'))
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'TIMEOUT': os.getenv('DEFAULT_CACHE_TIMEOUT'),
+    }
+}

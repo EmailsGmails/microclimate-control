@@ -1,6 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from os import environ
 
 from .models import Project, BuildingObject
 from .serializers import ProjectSerializer, BuildingObjectSerializer, DataPointSerializer, UserSerializer
@@ -15,6 +18,7 @@ from .permissions import (
 )
 
 APP_NAME = 'microclimate_control_app'
+DEFAULT_CACHE_TIMEOUT = environ.get('DEFAULT_CACHE_TIMEOUT')
 
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
@@ -43,6 +47,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
             if perm.codename.startswith('can_access_project_') and user.has_perm(f'{APP_NAME}.{perm.codename}')
         ]
         return Project.objects.filter(id__in=project_ids)
+
+    @method_decorator(cache_page(60 * 60 * 2))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(60 * 60 * 2))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 class BuildingObjectViewSet(viewsets.ModelViewSet):
     serializer_class = BuildingObjectSerializer
@@ -75,6 +87,14 @@ class BuildingObjectViewSet(viewsets.ModelViewSet):
         ]
         return BuildingObject.objects.filter(id__in=building_ids)
 
+    @method_decorator(cache_page(DEFAULT_CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(DEFAULT_CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 class DataPointViewSet(viewsets.ModelViewSet):
     serializer_class = DataPointSerializer
     permission_classes = [IsAdminUser | CanAccessBuildingContent]
@@ -103,3 +123,11 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         building_id = self.kwargs['object_pk']
         return BuildingObject.objects.get(id=building_id).users
+
+    @method_decorator(cache_page(DEFAULT_CACHE_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(DEFAULT_CACHE_TIMEOUT))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
