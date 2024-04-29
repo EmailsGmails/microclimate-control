@@ -4,6 +4,7 @@ from django.db import models
 
 import pdb
 
+
 class Project(models.Model):
     """
     Model representing a project.
@@ -25,6 +26,7 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+
 class User(AbstractUser):
     """
     Model representing a user.
@@ -45,7 +47,8 @@ class User(AbstractUser):
 
     full_name = models.CharField(max_length=100)
     email = models.EmailField(help_text="Enter e-mail")
-    phone = models.CharField(max_length=20, help_text="Enter phone number", validators=[RegexValidator(r'^\+?\d{1,13}$')])
+    phone = models.CharField(max_length=20, help_text="Enter phone number", validators=[
+                             RegexValidator(r'^\+?\d{1,13}$')])
     user_groups = models.ManyToManyField(
         'auth.Group',
         related_name='user_groups',
@@ -57,6 +60,7 @@ class User(AbstractUser):
 
     class Meta:
         db_table = 'auth_user'
+
 
 class BuildingObject(models.Model):
     """
@@ -85,6 +89,7 @@ class BuildingObject(models.Model):
     def __str__(self):
         return self.name
 
+
 class Metric(models.Model):
     """
     Model representing a metric.
@@ -103,6 +108,7 @@ class Metric(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class DataType(models.Model):
     """
@@ -131,6 +137,8 @@ class DataType(models.Model):
 
     def __str__(self):
         return self.name
+
+
 class Device(models.Model):
     """
     Model representing a device.
@@ -151,6 +159,7 @@ class Device(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class DataPoint(models.Model):
     """
@@ -176,7 +185,8 @@ class DataPoint(models.Model):
 
     data_type = models.ForeignKey(DataType, on_delete=models.PROTECT)
     device = models.ForeignKey(Device, on_delete=models.PROTECT)
-    building_object = models.ForeignKey(BuildingObject, on_delete=models.CASCADE)
+    building_object = models.ForeignKey(
+        BuildingObject, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.data_type}: {self.value} {self.data_type.metric}"

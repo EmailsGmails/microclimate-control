@@ -20,6 +20,7 @@ from .permissions import (
 APP_NAME = 'microclimate_control_app'
 DEFAULT_CACHE_TIMEOUT = environ.get('DEFAULT_CACHE_TIMEOUT')
 
+
 class ProjectViewSet(viewsets.ModelViewSet):
     """
     ProjectViewSet for managing projects.
@@ -103,6 +104,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """
         return super().retrieve(request, *args, **kwargs)
 
+
 class BuildingObjectViewSet(viewsets.ModelViewSet):
     """
     BuildingObjectViewSet for managing building objects.
@@ -154,8 +156,8 @@ class BuildingObjectViewSet(viewsets.ModelViewSet):
         building_ids = [
             int(perm.codename.split('_')[-1])
             for perm in user.user_permissions.all()
-            if perm.codename.startswith(f'can_access_project_{project_id}_building_') \
-               and user.has_perm(f'{APP_NAME}.{perm.codename}')
+            if perm.codename.startswith(f'can_access_project_{project_id}_building_')
+            and user.has_perm(f'{APP_NAME}.{perm.codename}')
         ]
         return BuildingObject.objects.filter(id__in=building_ids)
 
@@ -188,6 +190,8 @@ class BuildingObjectViewSet(viewsets.ModelViewSet):
             Response: HTTP response with the retrieved building object.
         """
         return super().retrieve(request, *args, **kwargs)
+
+
 class DataPointViewSet(viewsets.ModelViewSet):
     """
     DataPointViewSet for managing data points associated with building objects.

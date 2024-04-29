@@ -2,6 +2,7 @@ from rest_framework.permissions import BasePermission
 
 APP_NAME = 'microclimate_control_app'
 
+
 class CanAccessProject(BasePermission):
     """
     Permission class to check if a user has access to a project.
@@ -24,6 +25,7 @@ class CanAccessProject(BasePermission):
         else:
             return True
 
+
 class CanUpdateProject(BasePermission):
     """
     Permission class to check if a user has permission to update a project.
@@ -31,6 +33,7 @@ class CanUpdateProject(BasePermission):
     This permission class checks if the requesting user has the necessary permissions
     to update a project based on the project ID in the URL.
     """
+
     def has_permission(self, request, view):
         """
         Check if the user has permission to update the project.
@@ -48,6 +51,7 @@ class CanUpdateProject(BasePermission):
         else:
             return True
 
+
 class CanAccessBuildingObject(BasePermission):
     """
     Permission class to check if a user has permission to access a building object.
@@ -55,6 +59,7 @@ class CanAccessBuildingObject(BasePermission):
     This permission class checks if the requesting user has the necessary permissions
     to access a building object based on the project and building IDs in the URL.
     """
+
     def has_permission(self, request, view):
         """
         Check if the user has permission to access the building object.
@@ -67,10 +72,12 @@ class CanAccessBuildingObject(BasePermission):
             bool: True if the user has permission, False otherwise.
         """
         if request.method in ['GET']:
-            project_id, building_id = view.kwargs.get('project_pk', ''), view.kwargs.get('pk', '')
+            project_id, building_id = view.kwargs.get(
+                'project_pk', ''), view.kwargs.get('pk', '')
             return request.user.has_perm(f'{APP_NAME}.can_access_project_{project_id}_building_{building_id}')
         else:
             return True
+
 
 class CanCreateBuildingObject(BasePermission):
     """
@@ -79,6 +86,7 @@ class CanCreateBuildingObject(BasePermission):
     This permission class checks if the requesting user has the necessary permissions
     to create a building object based on the project ID in the URL.
     """
+
     def has_permission(self, request, view):
         """
         Check if the user has permission to create a building object.
@@ -99,6 +107,7 @@ class CanCreateBuildingObject(BasePermission):
         else:
             return True
 
+
 class CanUpdateBuildingObject(BasePermission):
     """
     Permission class to check if a user has permission to update a building object.
@@ -106,6 +115,7 @@ class CanUpdateBuildingObject(BasePermission):
     This permission class checks if the requesting user has the necessary permissions
     to update a building object based on the project ID in the URL.
     """
+
     def has_permission(self, request, view):
         """
         Check if the user has permission to update a building object.
@@ -126,6 +136,7 @@ class CanUpdateBuildingObject(BasePermission):
         else:
             return True
 
+
 class CanDeleteBuildingObject(BasePermission):
     """
     Permission class to check if a user has permission to delete a building object.
@@ -133,6 +144,7 @@ class CanDeleteBuildingObject(BasePermission):
     This permission class checks if the requesting user has the necessary permissions
     to delete a building object based on the project ID in the URL.
     """
+
     def has_permission(self, request, view):
         """
         Check if the user has permission to delete a building object.
@@ -153,6 +165,7 @@ class CanDeleteBuildingObject(BasePermission):
         else:
             return True
 
+
 class CanAccessBuildingContent(BasePermission):
     """
     Permission class to check if a user has permission to access building content.
@@ -160,6 +173,7 @@ class CanAccessBuildingContent(BasePermission):
     This permission class checks if the requesting user has the necessary permissions
     to access building content based on the project and building IDs in the URL.
     """
+
     def has_permission(self, request, view):
         """
         Check if the user has permission to access building content.

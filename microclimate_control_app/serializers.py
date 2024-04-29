@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Project, BuildingObject, DataPoint, User, DataType, Metric, Device
 
+
 class BuildingObjectSerializer(serializers.ModelSerializer):
     """
     Serializer for the BuildingObject model.
@@ -48,6 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'full_name']
 
+
 class DataTypeSerializer(serializers.ModelSerializer):
     """
     Serializer for the DataType model.
@@ -62,6 +64,7 @@ class DataTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = DataType
         fields = '__all__'
+
 
 class MetricSerializer(serializers.ModelSerializer):
     """
@@ -78,6 +81,7 @@ class MetricSerializer(serializers.ModelSerializer):
         model = Metric
         fields = '__all__'
 
+
 class DeviceSerializer(serializers.ModelSerializer):
     """
     Serializer for the Device model.
@@ -93,6 +97,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         model = Device
         fields = '__all__'
 
+
 class DataPointSerializer(serializers.ModelSerializer):
     """
     Serializer for the DataPoint model.
@@ -105,7 +110,8 @@ class DataPointSerializer(serializers.ModelSerializer):
 
     """
 
-    metric_name = serializers.SerializerMethodField(read_only=True, required=False)
+    metric_name = serializers.SerializerMethodField(
+        read_only=True, required=False)
     data_type_name = serializers.SerializerMethodField(required=False)
 
     class Meta:
@@ -121,7 +127,8 @@ class DataPointSerializer(serializers.ModelSerializer):
         """
 
         model = DataPoint
-        fields = ['id', 'data_type_name', 'data_type', 'metric_name', 'value', 'metric_name', 'device', 'building_object']
+        fields = ['id', 'data_type_name', 'data_type', 'metric_name',
+                  'value', 'metric_name', 'device', 'building_object']
 
     def get_data_type_name(self, obj):
         return obj.data_type.name
